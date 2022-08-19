@@ -27,6 +27,6 @@ type Waybill struct {
 	Parties              string `csv:"parties"`
 }
 
-type WayBillsStorage interface {
-	CreateWayBill()
+type WaybillStorage interface {
+	CreateWaybill(e Waybill) error
 }

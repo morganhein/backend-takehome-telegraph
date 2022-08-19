@@ -11,7 +11,7 @@ import (
 )
 
 type models interface {
-	telegraph.Equipment | telegraph.Event | telegraph.Locations | telegraph.Waybill
+	telegraph.Equipment | telegraph.Event | telegraph.Location | telegraph.Waybill
 }
 
 func Start(pgString string) error {

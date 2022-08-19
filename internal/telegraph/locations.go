@@ -1,6 +1,6 @@
 package telegraph
 
-type Locations struct {
+type Location struct {
 	ID              int64  `csv:"id"`
 	Customer        string `csv:"customer"`
 	Fleet           string `csv:"fleet"`
@@ -8,4 +8,8 @@ type Locations struct {
 	EquipmentStatus bool   `csv:"equipment_status"`
 	DateAdded       string `csv:"date_added"`
 	DateRemoved     string `csv:"date_removed"`
+}
+
+type LocationStorage interface {
+	CreateLocation(e Location) error
 }
