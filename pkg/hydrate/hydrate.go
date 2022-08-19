@@ -1,10 +1,10 @@
 package hydrate
 
 import (
-	"github.com/jackc/pgx/v4"
 	"os"
 
 	"github.com/gocarina/gocsv"
+	"github.com/golang-migrate/migrate/v4"
 
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph/store"
@@ -16,24 +16,34 @@ type models interface {
 
 func Start(pgString string) error {
 	//migrate first, and ready the db
-
-	st, _, err := store.CreatePostgresStore(pgString)
-	if err != nil {
-		panic(err)
+	if err := prepare(pgString); err != nil {
+		return err
 	}
-	err = process[telegraph.Equipment](st.CreateEquipment, "data/equipment.csv")
+	st, _, err := store.CreatePostgresStore(pgString)
 	if err != nil {
 		return err
 	}
-	err = process[telegraph.Event](st.CreateEvent, "data/events.csv")
-	if err != nil {
+	if err = process[telegraph.Equipment](st.CreateEquipment, "data/equipment.csv"); err != nil {
+		return err
+	}
+	if err = process[telegraph.Event](st.CreateEvent, "data/events.csv"); err != nil {
 		return err
 	}
 	return nil
 }
 
-func migrate(db *pgx.Conn) error {
-	return nil
+func prepare(pgString string) error {
+	m, err := migrate.New(
+		"file://db/migrations",
+		pgString)
+	if err != nil {
+		return err
+	}
+	err = m.Down()
+	if err != nil {
+		return err
+	}
+	return m.Up()
 }
 
 func process[T models](f func(T) error, fileLoc string) error {
