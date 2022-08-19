@@ -1,3 +1,5 @@
+export POSTGRESQL_URL='postgres://candidate:password123@localhost:5432/takehome?sslmode=disable'
+
 # Telegraph Backend Take-home
 
 This repo has everything you need to complete the take-home assignment. Know that we are excited about you as a candidate, and can't wait to see what you build!
