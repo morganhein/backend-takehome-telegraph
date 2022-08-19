@@ -20,5 +20,8 @@ func CreatePostgresStore(connString string) (*postgres, *pgx.Conn, error) {
 		equipment: equipment{
 			conn: c,
 		},
+		events: events{
+			conn: c,
+		},
 	}, c, nil
 }

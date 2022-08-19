@@ -5,6 +5,8 @@ import (
 
 	"github.com/gocarina/gocsv"
 	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph/store"
