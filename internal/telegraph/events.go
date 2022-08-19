@@ -1,6 +1,6 @@
 package telegraph
 
-type Events struct {
+type Event struct {
 	ID                    int64  `csv:"id"`
 	EquipmentID           string `csv:"equipment_id"`
 	SightingDate          string `csv:"sighting_date"`
@@ -15,4 +15,8 @@ type Events struct {
 	TrainAlphaCode        string `csv:"train_alpha_code"`
 	LocationID            int64  `csv:"location_id"`
 	WaybillID             int64  `csv:"waybill_id"`
+}
+
+type EventStorage interface {
+	CreateEvent(e Event) error
 }

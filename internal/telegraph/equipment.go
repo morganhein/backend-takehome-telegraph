@@ -1,13 +1,17 @@
 package telegraph
 
+import (
+	"github.com/morganhein/backend-takehome-telegraph/pkg/time"
+)
+
 type Equipment struct {
-	ID              int64  `csv:"id" stbl:"id, PRIMARY_KEY, AUTO_INCREMENT"`
-	Customer        string `csv:"customer" stbl:"customer"`
-	Fleet           string `csv:"fleet" stbl:"fleet"`
-	EquipmentID     string `csv:"equipment_id" stbl:"equipment_id"`
-	EquipmentStatus bool   `csv:"equipment_status" stbl:"equipment_status"`
-	DateAdded       string `csv:"date_added" stbl:"date_added"`
-	DateRemoved     string `csv:"date_removed" stbl:"date_removed"`
+	ID              int           `csv:"id"`
+	Customer        string        `csv:"customer"`
+	Fleet           string        `csv:"fleet"`
+	EquipmentID     string        `csv:"equipment_id"`
+	EquipmentStatus string        `csv:"equipment_status"`
+	DateAdded       time.DateTime `csv:"date_added"`
+	DateRemoved     time.DateTime `csv:"date_removed"`
 }
 
 type EquipmentStorage interface {

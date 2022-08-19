@@ -1,11 +1,11 @@
 package telegraph
 
 type Locations struct {
-	Id              int64  `csv:"id"`
+	ID              int64  `csv:"id"`
 	Customer        string `csv:"customer"`
 	Fleet           string `csv:"fleet"`
-	Equipmentid     string `csv:"equipment_id"`
-	Equipmentstatus bool   `csv:"equipment_status"`
-	Dateadded       string `csv:"date_added"`
-	Dateremoved     string `csv:"date_removed"`
+	EquipmentID     string `csv:"equipment_id"`
+	EquipmentStatus bool   `csv:"equipment_status"`
+	DateAdded       string `csv:"date_added"`
+	DateRemoved     string `csv:"date_removed"`
 }
