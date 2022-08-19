@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  postgres:
+    image: "postgres:13.4"
+    container_name: "postgres"
+    environment:
+      PGUSER: ${PGUSER}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      POSTGRES_DB: ${PGDATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      - "pgdata:/var/lib/postgresql/data/"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - telegraph_network
+
+volumes:
+  pgdata:
+
+networks:
+  telegraph_network:
