@@ -31,6 +31,9 @@ func Start(pgString string) error {
 	if err = process[telegraph.Event](st.CreateEvent, "data/events.csv"); err != nil {
 		return err
 	}
+	if err = process[telegraph.Location](st.CreateLocation, "data/locations.csv"); err != nil {
+		return err
+	}
 	return nil
 }
 

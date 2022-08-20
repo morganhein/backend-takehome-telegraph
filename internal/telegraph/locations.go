@@ -1,13 +1,18 @@
 package telegraph
 
 type Location struct {
-	ID              int64  `csv:"id"`
-	Customer        string `csv:"customer"`
-	Fleet           string `csv:"fleet"`
-	EquipmentID     string `csv:"equipment_id"`
-	EquipmentStatus bool   `csv:"equipment_status"`
-	DateAdded       string `csv:"date_added"`
-	DateRemoved     string `csv:"date_removed"`
+	ID        int     `csv:"id"`
+	City      string  `csv:"city"`
+	CityLong  string  `csv:"city_long"`
+	Station   string  `csv:"station"`
+	Fsac      int     `csv:"fsac"`
+	Scac      string  `csv:"scac"`
+	Splc      int64   `csv:"splc"`
+	State     string  `csv:"state"`
+	Timezone  string  `csv:"time_zone"`
+	Longitude float64 `csv:"longitude"`
+	Latitude  float64 `csv:"latitude"`
+	Country   string  `csv:"country"`
 }
 
 type LocationStorage interface {

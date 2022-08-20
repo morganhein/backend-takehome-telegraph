@@ -8,6 +8,7 @@ import (
 type postgres struct {
 	equipment
 	events
+	locations
 }
 
 func CreatePostgresStore(connString string) (*postgres, *pgx.Conn, error) {
@@ -21,6 +22,9 @@ func CreatePostgresStore(connString string) (*postgres, *pgx.Conn, error) {
 			conn: c,
 		},
 		events: events{
+			conn: c,
+		},
+		locations: locations{
 			conn: c,
 		},
 	}, c, nil
