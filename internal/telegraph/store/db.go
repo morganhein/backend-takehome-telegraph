@@ -9,6 +9,7 @@ type postgres struct {
 	equipment
 	events
 	locations
+	waybills
 }
 
 func CreatePostgresStore(connString string) (*postgres, *pgx.Conn, error) {
@@ -25,6 +26,9 @@ func CreatePostgresStore(connString string) (*postgres, *pgx.Conn, error) {
 			conn: c,
 		},
 		locations: locations{
+			conn: c,
+		},
+		waybills: waybills{
 			conn: c,
 		},
 	}, c, nil

@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS waybills
 (
-  id                     INTEGER  NOT NULL PRIMARY KEY
+  id                      INTEGER  NOT NULL PRIMARY KEY
   ,equipment_id           VARCHAR(10) NOT NULL
   ,waybill_date           VARCHAR(19) NOT NULL
   ,waybill_number         INTEGER  NOT NULL
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS waybills
   ,equipment_weight_code  VARCHAR(1)
   ,commodity_code         INTEGER  NOT NULL
   ,commodity_description  VARCHAR(15) NOT NULL
-  ,origin_id              INTEGER
+  ,origin_id              VARCHAR(5)
   ,destination_id         INTEGER  NOT NULL
   ,routes                 VARCHAR(129) NOT NULL
   ,parties                VARCHAR(581) NOT NULL
