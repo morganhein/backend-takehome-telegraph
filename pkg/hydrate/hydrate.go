@@ -21,7 +21,7 @@ func Start(pgString string) error {
 	if err := prepare(pgString); err != nil {
 		return err
 	}
-	st, _, err := store.CreatePostgresStore(pgString)
+	st, err := store.CreatePostgresStore(pgString)
 	if err != nil {
 		return err
 	}

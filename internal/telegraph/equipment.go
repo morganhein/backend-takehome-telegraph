@@ -16,4 +16,9 @@ type Equipment struct {
 
 type EquipmentStorage interface {
 	CreateEquipment(e Equipment) error
+	ListEquipment() ([]Equipment, error)
+}
+
+func (s serviceImpl) ListEquipment() ([]Equipment, error) {
+	return s.db.ListEquipment()
 }

@@ -2,7 +2,7 @@ package store
 
 import (
 	"context"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type postgres struct {
@@ -12,24 +12,24 @@ type postgres struct {
 	waybills
 }
 
-func CreatePostgresStore(connString string) (*postgres, *pgx.Conn, error) {
-	c, err := pgx.Connect(context.Background(), connString)
+func CreatePostgresStore(connString string) (*postgres, error) {
+	c, err := pgxpool.Connect(context.Background(), connString)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	return &postgres{
 		// this is a bit repetitive, and could be improved upon later
 		equipment: equipment{
-			conn: c,
+			pool: c,
 		},
 		events: events{
-			conn: c,
+			pool: c,
 		},
 		locations: locations{
-			conn: c,
+			pool: c,
 		},
 		waybills: waybills{
-			conn: c,
+			pool: c,
 		},
-	}, c, nil
+	}, nil
 }

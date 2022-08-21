@@ -2,8 +2,11 @@ package store
 
 import (
 	"context"
+
 	sq "github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v4"
+	"github.com/georgysavva/scany/pgxscan"
+	"github.com/jackc/pgx/v4/pgxpool"
+
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 )
 
@@ -12,7 +15,24 @@ var (
 )
 
 type equipment struct {
-	conn *pgx.Conn
+	pool *pgxpool.Pool
+}
+
+func (eq equipment) ListEquipment() ([]telegraph.Equipment, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, _, err := psql.Select("*").
+		From(EquipmentTable).ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var e []telegraph.Equipment
+	err = pgxscan.Select(context.Background(), eq.pool, &e, stmnt)
+	if err != nil {
+		return nil, err
+	}
+
+	return e, nil
 }
 
 func (eq equipment) CreateEquipment(e telegraph.Equipment) error {
@@ -24,7 +44,7 @@ func (eq equipment) CreateEquipment(e telegraph.Equipment) error {
 	if err != nil {
 		return err
 	}
-	_, err = eq.conn.Exec(context.Background(), stmnt, args...)
+	_, err = eq.pool.Exec(context.Background(), stmnt, args...)
 	if err != nil {
 		return err
 	}

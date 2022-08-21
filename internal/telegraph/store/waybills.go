@@ -2,10 +2,9 @@ package store
 
 import (
 	"context"
+	"github.com/jackc/pgx/v4/pgxpool"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v4"
-
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 )
 
@@ -14,7 +13,7 @@ var (
 )
 
 type waybills struct {
-	conn *pgx.Conn
+	pool *pgxpool.Pool
 }
 
 func (ev waybills) CreateWaybill(e telegraph.Waybill) error {
@@ -34,7 +33,7 @@ func (ev waybills) CreateWaybill(e telegraph.Waybill) error {
 	if err != nil {
 		return err
 	}
-	_, err = ev.conn.Exec(context.Background(), stmnt, args...)
+	_, err = ev.pool.Exec(context.Background(), stmnt, args...)
 	if err != nil {
 		return err
 	}

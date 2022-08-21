@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 )
 
@@ -12,7 +12,7 @@ var (
 )
 
 type events struct {
-	conn *pgx.Conn
+	pool *pgxpool.Pool
 }
 
 func (ev events) CreateEvent(e telegraph.Event) error {
@@ -28,7 +28,7 @@ func (ev events) CreateEvent(e telegraph.Event) error {
 	if err != nil {
 		return err
 	}
-	_, err = ev.conn.Exec(context.Background(), stmnt, args...)
+	_, err = ev.pool.Exec(context.Background(), stmnt, args...)
 	if err != nil {
 		return err
 	}
