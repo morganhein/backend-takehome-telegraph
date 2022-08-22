@@ -4,14 +4,14 @@ type Service interface {
 	// Equipment
 	ListEquipment() ([]Equipment, error)
 	// Events
-	ListEvents() ([]Event, error)
+	ListEvents(sightingDate string) ([]Event, error)
 	// Locations
 	ListLocations() ([]Location, error)
-	GetRoute(fromID string, toID string) (Route, error)
+	GetRoute(fromID int, toID int) (Route, error)
 	// Waybills
 	ListWaybills() ([]Waybill, error)
 	// Association can be equipment, events, or locations, or empty
-	GetWaybill(ID string, association string) (*Waybill, error)
+	GetWaybill(ID int, association string) (*Waybill, error)
 }
 
 type Storage interface {

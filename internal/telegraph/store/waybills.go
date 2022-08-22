@@ -53,7 +53,7 @@ func (p postgres) ListWaybills() ([]telegraph.Waybill, error) {
 	return e, nil
 }
 
-func (p postgres) GetWaybill(ID string, association string) (*telegraph.Waybill, error) {
+func (p postgres) GetWaybill(ID int, association string) (*telegraph.Waybill, error) {
 	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 	stmnt, args, err := psql.Select("*").
 		From(fmt.Sprintf("%v as w", WaybillsTable)).

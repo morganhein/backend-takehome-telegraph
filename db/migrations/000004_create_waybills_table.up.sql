@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS waybills
   ,equipment_weight_code  VARCHAR(1)
   ,commodity_code         INTEGER  NOT NULL
   ,commodity_description  VARCHAR(15) NOT NULL
-  ,origin_id              VARCHAR(5)
+  ,origin_id              INTEGER
   ,destination_id         INTEGER  NOT NULL
   ,routes                 VARCHAR(129) NOT NULL
   ,parties                VARCHAR(581) NOT NULL

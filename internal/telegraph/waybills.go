@@ -35,13 +35,13 @@ type Waybill struct {
 type WaybillStorage interface {
 	CreateWaybill(e Waybill) error
 	ListWaybills() ([]Waybill, error)
-	GetWaybill(ID string, association string) (*Waybill, error)
+	GetWaybill(ID int, association string) (*Waybill, error)
 }
 
 func (s serviceImpl) ListWaybills() ([]Waybill, error) {
 	return s.db.ListWaybills()
 }
 
-func (s serviceImpl) GetWaybill(ID string, association string) (*Waybill, error) {
+func (s serviceImpl) GetWaybill(ID int, association string) (*Waybill, error) {
 	return s.db.GetWaybill(ID, association)
 }

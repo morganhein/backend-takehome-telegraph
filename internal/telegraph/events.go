@@ -21,9 +21,9 @@ type Event struct {
 
 type EventStorage interface {
 	CreateEvent(e Event) error
-	ListEvents() ([]Event, error)
+	ListEvents(sightingDate string) ([]Event, error)
 }
 
-func (s serviceImpl) ListEvents() ([]Event, error) {
-	return s.db.ListEvents()
+func (s serviceImpl) ListEvents(sightingDate string) ([]Event, error) {
+	return s.db.ListEvents(sightingDate)
 }

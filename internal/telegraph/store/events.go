@@ -31,16 +31,40 @@ func (p postgres) CreateEvent(e telegraph.Event) error {
 	return nil
 }
 
-func (p postgres) ListEvents() ([]telegraph.Event, error) {
+func (p postgres) ListEvents(sightingDate string) ([]telegraph.Event, error) {
 	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-	stmnt, _, err := psql.Select("*").
-		From(EventsTable).ToSql()
+	q := psql.Select("*").
+		From(EventsTable)
+	if len(sightingDate) > 0 {
+		q.Where("sighting_date = ?", sightingDate)
+	}
+	stmnt, args, err := q.ToSql()
+
 	if err != nil {
 		return nil, err
 	}
 
 	var e []telegraph.Event
-	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt)
+	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	return e, nil
+}
+
+func (p postgres) GetEventsByWaybillID(waybillID int) ([]telegraph.Event, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, args, err := psql.Select("*").
+		From(EventsTable).
+		Where("waybill_id = ?", waybillID).
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var e []telegraph.Event
+	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt, args...)
 	if err != nil {
 		return nil, err
 	}

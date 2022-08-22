@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -47,7 +48,12 @@ func (t httpEndpoint) ListEquipment(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t httpEndpoint) ListEvents(w http.ResponseWriter, r *http.Request) {
-	eq, err := t.srv.ListEvents()
+	q := r.URL.Query()
+	sightingDate := ""
+	if len(q) > 0 {
+		sightingDate = q.Get("sighting_date")
+	}
+	eq, err := t.srv.ListEvents(sightingDate)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
@@ -114,7 +120,11 @@ func (t httpEndpoint) Getwaybill(w http.ResponseWriter, r *http.Request) {
 	if len(parts) == 1 {
 		parts = append(parts, "")
 	}
-	eq, err := t.srv.GetWaybill(parts[0], parts[1])
+	converted, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return
+	}
+	eq, err := t.srv.GetWaybill(converted, parts[1])
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return

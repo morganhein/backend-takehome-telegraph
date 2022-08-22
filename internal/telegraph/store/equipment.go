@@ -47,7 +47,7 @@ func (p postgres) ListEquipment() ([]telegraph.Equipment, error) {
 
 func (p postgres) GetEquipmentByEquipmentID(equipmentID string) ([]telegraph.Equipment, error) {
 	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-	stmnt, _, err := psql.Select("*").
+	stmnt, args, err := psql.Select("*").
 		From(EquipmentTable).
 		Where("equipment_id = ?", equipmentID).
 		ToSql()
@@ -56,7 +56,7 @@ func (p postgres) GetEquipmentByEquipmentID(equipmentID string) ([]telegraph.Equ
 	}
 
 	var e []telegraph.Equipment
-	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt)
+	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt, args...)
 	if err != nil {
 		return nil, err
 	}

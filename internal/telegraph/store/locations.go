@@ -44,7 +44,7 @@ func (p postgres) ListLocation() ([]telegraph.Location, error) {
 	return e, nil
 }
 
-func (p postgres) GetLocation(ID string) (*telegraph.Location, error) {
+func (p postgres) GetLocation(ID int) (*telegraph.Location, error) {
 	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 	stmnt, args, err := psql.Select("*").
 		From(LocationsTable).

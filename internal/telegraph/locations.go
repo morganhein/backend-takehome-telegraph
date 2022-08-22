@@ -20,14 +20,14 @@ type Route []Location
 type LocationStorage interface {
 	CreateLocation(e Location) error
 	ListLocation() ([]Location, error)
-	GetLocation(ID string) (*Location, error)
+	GetLocation(ID int) (*Location, error)
 }
 
 func (s serviceImpl) ListLocations() ([]Location, error) {
 	return s.db.ListLocation()
 }
 
-func (s serviceImpl) GetRoute(fromID, toID string) (Route, error) {
+func (s serviceImpl) GetRoute(fromID, toID int) (Route, error) {
 	from, err := s.db.GetLocation(fromID)
 	if err != nil {
 		return nil, err
