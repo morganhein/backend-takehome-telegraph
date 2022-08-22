@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"fmt"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/georgysavva/scany/pgxscan"
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
@@ -50,4 +51,35 @@ func (p postgres) ListWaybills() ([]telegraph.Waybill, error) {
 	}
 
 	return e, nil
+}
+
+func (p postgres) GetWaybill(ID string, association string) (*telegraph.Waybill, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, args, err := psql.Select("*").
+		From(fmt.Sprintf("%v as w", WaybillsTable)).
+		Where(sq.Eq{"w.id": ID}).ToSql()
+
+	if err != nil {
+		return nil, err
+	}
+	var e telegraph.Waybill
+	err = pgxscan.Get(context.Background(), p.pool, &e, stmnt, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(association) == 0 {
+		return &e, nil
+	}
+
+	if association == "equipment" {
+		eq, err := p.GetEquipmentByEquipmentID(e.EquipmentID)
+		if err != nil {
+			return nil, err
+		}
+		e.Equipment = eq
+		return &e, nil
+	}
+
+	return &e, nil
 }

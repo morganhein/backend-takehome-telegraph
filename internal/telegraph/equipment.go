@@ -5,7 +5,7 @@ import (
 )
 
 type Equipment struct {
-	ID              int           `csv:"id"`
+	ID              int           `db:"id" csv:"id"`
 	Customer        string        `csv:"customer"`
 	Fleet           string        `csv:"fleet"`
 	EquipmentID     string        `csv:"equipment_id"`

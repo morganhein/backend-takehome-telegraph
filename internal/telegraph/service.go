@@ -3,12 +3,15 @@ package telegraph
 type Service interface {
 	// Equipment
 	ListEquipment() ([]Equipment, error)
-	//ListEvents
+	// Events
 	ListEvents() ([]Event, error)
-	//ListLocations
+	// Locations
 	ListLocations() ([]Location, error)
-	//ListWaybills
+	GetRoute(fromID string, toID string) (Route, error)
+	// Waybills
 	ListWaybills() ([]Waybill, error)
+	// Association can be equipment, events, or locations, or empty
+	GetWaybill(ID string, association string) (*Waybill, error)
 }
 
 type Storage interface {

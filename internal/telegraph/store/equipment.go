@@ -44,3 +44,21 @@ func (p postgres) ListEquipment() ([]telegraph.Equipment, error) {
 
 	return e, nil
 }
+
+func (p postgres) GetEquipmentByEquipmentID(equipmentID string) ([]telegraph.Equipment, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, _, err := psql.Select("*").
+		From(EquipmentTable).
+		Where("equipment_id = ?", equipmentID).
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var e []telegraph.Equipment
+	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt)
+	if err != nil {
+		return nil, err
+	}
+	return e, nil
+}

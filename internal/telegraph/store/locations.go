@@ -43,3 +43,20 @@ func (p postgres) ListLocation() ([]telegraph.Location, error) {
 
 	return e, nil
 }
+
+func (p postgres) GetLocation(ID string) (*telegraph.Location, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, args, err := psql.Select("*").
+		From(LocationsTable).
+		Where("id = ?", ID).
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
+	var e telegraph.Location
+	err = pgxscan.Get(context.Background(), p.pool, &e, stmnt, args...)
+	if err != nil {
+		return nil, err
+	}
+	return &e, nil
+}

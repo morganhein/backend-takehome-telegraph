@@ -3,7 +3,7 @@ package telegraph
 import "github.com/morganhein/backend-takehome-telegraph/pkg/time"
 
 type Waybill struct {
-	ID                   int           `csv:"id"`
+	ID                   int           `db:"id" csv:"id"`
 	EquipmentID          string        `csv:"equipment_id"`
 	WaybillDate          time.DateTime `csv:"waybill_date"`
 	WaybillNumber        int           `csv:"waybill_number"`
@@ -27,13 +27,21 @@ type Waybill struct {
 	DestinationID        int           `csv:"destination_id"`
 	Routes               string        `csv:"routes"`
 	Parties              string        `csv:"parties"`
+	Equipment            []Equipment   `json:"equipment,omitempty"`
+	Location             []Location    `json:"location,omitempty"`
+	Event                []Event       `json:"event,omitempty"`
 }
 
 type WaybillStorage interface {
 	CreateWaybill(e Waybill) error
 	ListWaybills() ([]Waybill, error)
+	GetWaybill(ID string, association string) (*Waybill, error)
 }
 
 func (s serviceImpl) ListWaybills() ([]Waybill, error) {
 	return s.db.ListWaybills()
+}
+
+func (s serviceImpl) GetWaybill(ID string, association string) (*Waybill, error) {
+	return s.db.GetWaybill(ID, association)
 }
