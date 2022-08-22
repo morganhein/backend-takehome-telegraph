@@ -3,6 +3,12 @@ package telegraph
 type Service interface {
 	// Equipment
 	ListEquipment() ([]Equipment, error)
+	//ListEvents
+	ListEvents() ([]Event, error)
+	//ListLocations
+	ListLocations() ([]Location, error)
+	//ListWaybills
+	ListWaybills() ([]Waybill, error)
 }
 
 type Storage interface {

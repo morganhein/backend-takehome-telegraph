@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 )
 
@@ -11,11 +11,7 @@ var (
 	EventsTable = "events"
 )
 
-type events struct {
-	pool *pgxpool.Pool
-}
-
-func (ev events) CreateEvent(e telegraph.Event) error {
+func (p postgres) CreateEvent(e telegraph.Event) error {
 	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 	stmnt, args, err := psql.Insert(EventsTable).
 		Columns("id", "equipment_id", "sighting_date", "sighting_event_code", "reporting_railroad_scac",
@@ -28,9 +24,26 @@ func (ev events) CreateEvent(e telegraph.Event) error {
 	if err != nil {
 		return err
 	}
-	_, err = ev.pool.Exec(context.Background(), stmnt, args...)
+	_, err = p.pool.Exec(context.Background(), stmnt, args...)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (p postgres) ListEvents() ([]telegraph.Event, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, _, err := psql.Select("*").
+		From(EventsTable).ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var e []telegraph.Event
+	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt)
+	if err != nil {
+		return nil, err
+	}
+
+	return e, nil
 }

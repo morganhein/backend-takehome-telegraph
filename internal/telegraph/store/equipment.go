@@ -2,11 +2,9 @@ package store
 
 import (
 	"context"
+	"github.com/georgysavva/scany/pgxscan"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/georgysavva/scany/pgxscan"
-	"github.com/jackc/pgx/v4/pgxpool"
-
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 )
 
@@ -14,28 +12,7 @@ var (
 	EquipmentTable = "equipment"
 )
 
-type equipment struct {
-	pool *pgxpool.Pool
-}
-
-func (eq equipment) ListEquipment() ([]telegraph.Equipment, error) {
-	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-	stmnt, _, err := psql.Select("*").
-		From(EquipmentTable).ToSql()
-	if err != nil {
-		return nil, err
-	}
-
-	var e []telegraph.Equipment
-	err = pgxscan.Select(context.Background(), eq.pool, &e, stmnt)
-	if err != nil {
-		return nil, err
-	}
-
-	return e, nil
-}
-
-func (eq equipment) CreateEquipment(e telegraph.Equipment) error {
+func (p postgres) CreateEquipment(e telegraph.Equipment) error {
 	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 	stmnt, args, err := psql.Insert(EquipmentTable).
 		Columns("id", "customer", "fleet", "equipment_id", "equipment_status", "date_added", "date_removed").
@@ -44,9 +21,26 @@ func (eq equipment) CreateEquipment(e telegraph.Equipment) error {
 	if err != nil {
 		return err
 	}
-	_, err = eq.pool.Exec(context.Background(), stmnt, args...)
+	_, err = p.pool.Exec(context.Background(), stmnt, args...)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (p postgres) ListEquipment() ([]telegraph.Equipment, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, _, err := psql.Select("*").
+		From(EquipmentTable).ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var e []telegraph.Equipment
+	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt)
+	if err != nil {
+		return nil, err
+	}
+
+	return e, nil
 }

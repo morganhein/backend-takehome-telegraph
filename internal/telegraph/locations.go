@@ -9,7 +9,7 @@ type Location struct {
 	Scac      string  `csv:"scac"`
 	Splc      int64   `csv:"splc"`
 	State     string  `csv:"state"`
-	Timezone  string  `csv:"time_zone"`
+	TimeZone  string  `csv:"time_zone"`
 	Longitude float64 `csv:"longitude"`
 	Latitude  float64 `csv:"latitude"`
 	Country   string  `csv:"country"`
@@ -17,4 +17,9 @@ type Location struct {
 
 type LocationStorage interface {
 	CreateLocation(e Location) error
+	ListLocation() ([]Location, error)
+}
+
+func (s serviceImpl) ListLocations() ([]Location, error) {
+	return s.db.ListLocation()
 }

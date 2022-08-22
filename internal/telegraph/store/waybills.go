@@ -2,9 +2,8 @@ package store
 
 import (
 	"context"
-	"github.com/jackc/pgx/v4/pgxpool"
-
 	sq "github.com/Masterminds/squirrel"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/morganhein/backend-takehome-telegraph/internal/telegraph"
 )
 
@@ -12,11 +11,7 @@ var (
 	WaybillsTable = "waybills"
 )
 
-type waybills struct {
-	pool *pgxpool.Pool
-}
-
-func (ev waybills) CreateWaybill(e telegraph.Waybill) error {
+func (p postgres) CreateWaybill(e telegraph.Waybill) error {
 	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 	stmnt, args, err := psql.Insert(WaybillsTable).
 		Columns("id", "equipment_id", "waybill_date", "waybill_number", "created_date",
@@ -33,9 +28,26 @@ func (ev waybills) CreateWaybill(e telegraph.Waybill) error {
 	if err != nil {
 		return err
 	}
-	_, err = ev.pool.Exec(context.Background(), stmnt, args...)
+	_, err = p.pool.Exec(context.Background(), stmnt, args...)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (p postgres) ListWaybills() ([]telegraph.Waybill, error) {
+	psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+	stmnt, _, err := psql.Select("*").
+		From(WaybillsTable).ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var e []telegraph.Waybill
+	err = pgxscan.Select(context.Background(), p.pool, &e, stmnt)
+	if err != nil {
+		return nil, err
+	}
+
+	return e, nil
 }

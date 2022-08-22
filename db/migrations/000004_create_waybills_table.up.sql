@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS waybills
 (
   id                      INTEGER  NOT NULL PRIMARY KEY
   ,equipment_id           VARCHAR(10) NOT NULL
-  ,waybill_date           VARCHAR(19) NOT NULL
+  ,waybill_date           TIMESTAMP NOT NULL
   ,waybill_number         INTEGER  NOT NULL
   ,created_date           TIMESTAMP  NOT NULL
   ,billing_road_mark_name VARCHAR(4) NOT NULL
@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS waybills
   ,origin_mark_name       VARCHAR(4) NOT NULL
   ,destination_mark_name  VARCHAR(4) NOT NULL
   ,sending_road_mark      VARCHAR(4) NOT NULL
-  ,bill_of_lading_number  VARCHAR(23) NOT NULL
-  ,bill_of_lading_date    VARCHAR(19) NOT NULL
+  ,bill_of_lading_number  VARCHAR(30) NOT NULL
+  ,bill_of_lading_date    TIMESTAMP NOT NULL
   ,equipment_weight       INTEGER  NOT NULL
   ,tare_weight            INTEGER  NOT NULL
   ,allowable_weight       INTEGER  NOT NULL

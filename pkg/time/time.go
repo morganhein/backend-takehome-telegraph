@@ -1,6 +1,7 @@
 package time
 
 import (
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"time"
@@ -50,4 +51,8 @@ func (date *DateTime) Scan(src any) error {
 	}
 	date.Time = &t
 	return nil
+}
+
+func (date DateTime) Value() (driver.Value, error) {
+	return *date.Time, nil
 }

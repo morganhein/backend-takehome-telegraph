@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS equipment
   ,fleet            VARCHAR(100) NOT NULL
   ,equipment_id     VARCHAR(100)  NOT NULL
   ,equipment_status VARCHAR(1) NOT NULL
-  ,date_added       TIMESTAMPTZ  NOT NULL
-  ,date_removed     TIMESTAMPTZ
+  ,date_added       TIMESTAMP  NOT NULL
+  ,date_removed     TIMESTAMP
 );

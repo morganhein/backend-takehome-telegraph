@@ -6,10 +6,7 @@ import (
 )
 
 type postgres struct {
-	equipment
-	events
-	locations
-	waybills
+	pool *pgxpool.Pool
 }
 
 func CreatePostgresStore(connString string) (*postgres, error) {
@@ -18,18 +15,6 @@ func CreatePostgresStore(connString string) (*postgres, error) {
 		return nil, err
 	}
 	return &postgres{
-		// this is a bit repetitive, and could be improved upon later
-		equipment: equipment{
-			pool: c,
-		},
-		events: events{
-			pool: c,
-		},
-		locations: locations{
-			pool: c,
-		},
-		waybills: waybills{
-			pool: c,
-		},
+		pool: c,
 	}, nil
 }

@@ -22,6 +22,9 @@ func main() {
 	// muxing
 	mux := http.NewServeMux()
 	mux.HandleFunc("/equipment", srv.ListEquipment)
+	mux.HandleFunc("/events", srv.ListEvents)
+	mux.HandleFunc("/locations", srv.ListLocations)
+	mux.HandleFunc("/waybills", srv.ListWaybills)
 
 	// start
 	if err := http.ListenAndServe(":8080", mux); err != nil {
