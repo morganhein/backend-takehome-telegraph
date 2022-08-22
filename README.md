@@ -1,4 +1,18 @@
-export POSTGRESQL_URL='postgres://candidate:password123@localhost:5432/takehome?sslmode=disable'
+# Morgan's thoughts on this solution:
+1. I used squirrel to learn the library a bit and use this as an educational exercise. I like it, but scanning values into objects needs some love.
+2. I tried to use the standard library for muxing/route handling/route arguments/query params. I won't do that again. Next time, i'll use something like https://gin-gonic.com/
+3. Some of the patterns here would need to be flushed out more for a real solution.
+4. Obv missing tests.
+5. None of the extra credit was completed.
+
+# Morgan's thoughts on the below:
+1. There is no `sighting_data` property. I piped through the ability to filter exactly on `sighting_date`, however what further discovery on making this actually usable would be required before implementing a system.
+2. It seems like there are duplicate Equipments for a single Waybill, which doesn't make sense to me, but that's what gets returned.
+
+## To run:
+1. Follow the below to get the postgres database up. 
+2. Then run cmd/hydrate/main.go to run. `go run cmd/hydrate/main.go`. 
+3. Then run `go run cmd/server/main.go` to run the server. 
 
 # Telegraph Backend Take-home
 
