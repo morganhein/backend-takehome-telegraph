@@ -68,17 +68,32 @@ func (p postgres) GetWaybill(ID string, association string) (*telegraph.Waybill,
 		return nil, err
 	}
 
-	if len(association) == 0 {
-		return &e, nil
-	}
-
 	if association == "equipment" {
 		eq, err := p.GetEquipmentByEquipmentID(e.EquipmentID)
 		if err != nil {
 			return nil, err
 		}
 		e.Equipment = eq
-		return &e, nil
+	}
+	if association == "locations" {
+		var locations []telegraph.Location
+		loc, err := p.GetLocation(e.OriginID)
+		if err != nil {
+			return nil, err
+		}
+		locations = append(locations, *loc)
+		loc, err = p.GetLocation(e.DestinationID)
+		if err != nil {
+			return nil, err
+		}
+		locations = append(locations, *loc)
+	}
+	if association == "events" {
+		ev, err := p.GetEventsByWaybillID(e.ID)
+		if err != nil {
+			return nil, err
+		}
+		e.Event = ev
 	}
 
 	return &e, nil

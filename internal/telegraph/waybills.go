@@ -23,7 +23,7 @@ type Waybill struct {
 	EquipmentWeightCode  string        `csv:"equipment_weight_code"`
 	CommodityCode        int           `csv:"commodity_code"`
 	CommodityDescription string        `csv:"commodity_description"`
-	OriginID             string        `csv:"origin_id"`
+	OriginID             int           `csv:"origin_id"`
 	DestinationID        int           `csv:"destination_id"`
 	Routes               string        `csv:"routes"`
 	Parties              string        `csv:"parties"`
